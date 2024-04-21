@@ -78,14 +78,14 @@ def build_feature_offset(features: List[Feature]) -> OrderedDict:
             start += feature.dim
 
         else:
-            raise TypeError(f"Invalid feature column type. Got {type(feature)}")
+            raise TypeError(f"Invalid feature type. Got {type(feature)}")
 
     return feature_offset
 
 
-def create_embedding_matrix(sparse_features: List[SparseFeature], linear: bool = False):
+def create_embedding_matrix(sparse_features: List[SparseFeature], linear: bool = False) -> nn.ModuleDict:
     embedding_dict = nn.ModuleDict({
-        feature.name: nn.Embedding(
+        feature.embedding_name: nn.Embedding(
             num_embeddings=feature.vocabulary_size,
             embedding_dim=feature.embedding_dim if not linear else 1
         )
