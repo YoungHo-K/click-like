@@ -1,12 +1,13 @@
 from typing import Dict, List
 
+import numpy as np
 import torch
 import torch.nn as nn
 
 from model.inputs import Feature, SparseFeature, DenseFeature, build_feature_offset
 
 
-class _ModelObject(nn.Module):
+class ModelObject(nn.Module):
     def __init__(self, features: List[Feature], device: str = "cpu"):
         super().__init__()
 
