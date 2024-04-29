@@ -9,9 +9,7 @@ from model.inputs import Feature, SparseFeature, create_embedding_matrix
 
 class Linear(_ModelObject):
     def __init__(self, features: List[Feature], device: str = "cpu"):
-        super().__init__(features)
-
-        self.device = device
+        super().__init__(features, device)
 
         self.sparse_weights = None
         self.dense_weights = None
@@ -42,9 +40,7 @@ class Linear(_ModelObject):
 
 class FactorizationMachine(_ModelObject):
     def __init__(self, sparse_features: List[SparseFeature], device: str = "cpu"):
-        super().__init__(sparse_features)
-
-        self.device = device
+        super().__init__(sparse_features, device)
 
         self.embedding_dict = create_embedding_matrix(self.sparse_features, linear=False).to(self.device)
 
@@ -55,4 +51,4 @@ class FactorizationMachine(_ModelObject):
         square_of_sum = torch.pow(torch.sum(embedding_values, dim=1), exponent=2)
         sum_of_square = torch.sum(torch.pow(embedding_values, exponent=2), dim=1)
 
-        return torch.sum(square_of_sum - sum_of_square, dim=1) / 2
+        return torch.sum(square_of_sum - sum_of_square, dim=1) * 0.5

@@ -7,12 +7,14 @@ from model.inputs import Feature, SparseFeature, DenseFeature, build_feature_off
 
 
 class _ModelObject(nn.Module):
-    def __init__(self, features: List[Feature]):
+    def __init__(self, features: List[Feature], device: str = "cpu"):
         super().__init__()
 
         self.feature_offset = build_feature_offset(features)
         self.dense_features = list(filter(lambda x: isinstance(x, DenseFeature), features))
         self.sparse_features = list(filter(lambda x: isinstance(x, SparseFeature), features))
+
+        self.device = device
 
     @property
     def use_sparse_feature(self):
